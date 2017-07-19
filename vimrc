@@ -425,7 +425,7 @@ nnoremap <leader>zr :VtrFocusRunner<CR>
 " -----------------
 nnoremap <Leader>l :w<CR>:TestNearest<CR>:redraw!<CR>
 nnoremap <Leader>a :w<CR>:TestFile<CR>:redraw!<CR>
-let test#strategy = 'vtr'
+let test#strategy = 'dispatch'
 let test#ruby#rspec#options = {
       \ 'nearest': '--format documentation',
       \ 'file':    '--format documentation',
@@ -581,6 +581,7 @@ Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'tpope/vim-rake'
 Plug 'tpope/vim-projectionist'
 Plug 'janko-m/vim-test'
+Plug 'tpope/vim-dispatch'
 
 " tmux
 Plug 'christoomey/vim-tmux-runner'

@@ -322,6 +322,13 @@ set grepformat=%f:%l:%c:%m
 " Without this, Gundo won't run because Python 2 isn't installed.
 let g:gundo_prefer_python3 = 1
 
+" supertab
+" --------
+" Use omnifunc if available, then completefunc, then normal <C-p>
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
+
 " peekaboo
 " --------
 let g:peekaboo_window	= 'vert bo 50new'
@@ -332,7 +339,7 @@ let g:peekaboo_window	= 'vert bo 50new'
 augroup Ale
   autocmd!
   " ALE linting events
-  set updatetime=1000
+  " set updatetime=1000
   let g:ale_lint_on_text_changed = 'never'
   let g:ale_linters = {}
   " Run everything except rails_best_practices, which runs multiple processes
@@ -593,6 +600,52 @@ Plug 'mxw/vim-jsx'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'briancollins/vim-jst'
 Plug 'leafgarland/typescript-vim'
+Plug 'Quramy/tsuquyomi'
+
+" CoC Completion
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+set hidden
+set updatetime=300
+set cmdheight=2
+set shortmess+=c
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" ctrl-space
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+if has('patch8.1.1068')
+  " Use `complete_info` if your (Neo)Vim version supports it.
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 " Ruby/Rails
 Plug 'tpope/vim-rails'
